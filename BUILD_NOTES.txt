@@ -1,0 +1,118 @@
+DEVOUR Monster Freeze + Noclip + Unlimited UV v0.4.0 - development handoff
+2026-10-28 (America/Chicago)
+
+BASELINE AND REQUEST
+The user confirmed v0.3.1 works in VR and requested full starting UV with no
+drain in any difficulty. This release starts from the exact delivered v0.3.1
+ZIP. FreezeCore, MonsterLease, NoclipCore, NoclipLease and PlayerControls are
+unchanged. Existing controls and the three-line desktop overlay are retained.
+
+UNLIMITED UV
+UnlimitedUv resolves InGameHelpers.GetLocalNolanBehaviour on every operation.
+It requires an active local player with an attached entity that is owned or
+controlled locally, in the existing solo/host scope. It matches the player's
+batteryAttribute by native pointer, not a managed wrapper or name-only search.
+Remote batteries and all other attributes retain native behavior. No keyboard
+or VR binding was added. Charge is automatic and independent of freeze/flight.
+
+NolanBehaviour.Attached postfix fills after native difficulty initialization.
+OnUpdate retries if the local player or battery was not yet available, refills
+a new player, and follows capacity changes. The native Value setter updates
+UI/events. Easy/Normal/Hard retain their current maximum, including any active
+battery bonus. Nightmare enables only the battery's NightmareModeBattery state
+and uses its native 60-unit capacity with isUsingBatteryBonus, following the
+native battery item's charge sequence. It never changes character difficulty.
+A missing/invalid capacity produces a UV error instead of guessing.
+
+Three Attribute hooks are restricted to that exact local battery:
+- set_Value prefix replaces incoming charge with full capacity, including the
+  Nightmare zero write on spawn or returning from purgatory. Native setter
+  notifications and scheduling still execute.
+- UpdateValue prefix cancels and clears the scheduled event, fills if needed,
+  and suppresses the native direct drain before the empty-destination callback.
+  This avoids a transient empty charge that could stop the UV ability.
+- ResetValue prefix replaces the direct start-value write with a full setter
+  notification, so the UI never receives the empty reset value.
+
+Native ScheduleAutoUpdate can call UpdateValue synchronously for a zero start
+delay. Reentrancy guards allow the full setter while still suppressing nested
+drain ticks. Rates, intervals, start values and input/ability gates are not
+changed. UV still uses the user's normal control and native gameplay gates.
+When the captured player loses eligibility or a scene changes, references are
+cleared and native scheduling is resumed once if the old live battery had its
+update loop suppressed. A release guard permits that native scheduling without
+recapturing the departing player. No forced UV input or network event is sent.
+
+The UV hooks have their own Harmony owner and setup/runtime errors. A UV setup
+failure unpatches UV alone; freeze and flight remain available. Reports include
+UnlimitedUvReady, UnlimitedUvSetupError and the adapter's active/fault state,
+last player/pointer/difficulty/charge/capacity, refill count, blocked scheduled
+ticks, rewritten setter values and blocked resets. F9 and EXPORT_REPORT.cmd
+retain the existing extracted-package Reports destination.
+
+NATIVE EVIDENCE (EXACT TARGET BUILD; RVAs)
+NolanBehaviour.Awake                  0x005E9610  resolves the Battery attribute
+NolanBehaviour.Attached               0x005EB740  sets difficulty; Nightmare zero
+NolanBehaviour.OnAttributeUpdateValue 0x00607D60  native battery gauge/bonus rules
+NolanBehaviour.ReturnFromPurgatory    0x006132D0  can write zero in Nightmare
+UseItem.AbilityStarted                0x00750EB0  native battery state/charge
+Fry.CanStartAbility                   0x00737430  retains native ability gates
+Attribute.set_Value                  0x022364C0  clamp, value event, scheduling
+Attribute.ScheduleAutoUpdate         0x02236740  cancels, immediate/delayed tick
+Attribute.UpdateValue                0x02236870  direct drain and empty callback
+Attribute.CancelAutoUpdate           0x02236AF0  cancels stored scheduled event
+Attribute.ResetValue                 0x02236B00  direct start-value/event path
+Attribute.StateChange                0x02236BA0  resumes native scheduling
+Only distinct substantive methods are patched. Small shared getter/setter RVAs
+are not patched. The game binaries are references/evidence, not package files.
+
+EXISTING CONTROLS
+Left click alone remains DEVOUR's normal run action. A right-only click toggles
+no-clip on release. Both held together toggle freeze once, consume the right
+click, and require both released before rearming. Either press order works.
+Mapped joystick movement, native turning/headset look, held jump/crouch,
+head/controller/character direction, keyboard controls, local identity,
+collision recovery and lifecycle restoration remain byte-identical to v0.3.1.
+The overlay still has exactly three labels: version, Freeze, No-clip.
+
+INSTALLER
+Known v0.1.0, v0.2.0, v0.2.1, v0.2.2, v0.3.0 and v0.3.1 releases upgrade
+through the existing verified-payload path. Reinstallation of v0.4.0 is supported.
+previous_v0.3.1_hashes.json is copied from the delivered v0.3.1 payload manifest.
+Loader/generated bindings and unrelated mods are preserved. Existing game
+binaries and saves are never replaced. No new loader/dependency is required.
+
+TARGET / BUILD
+DEVOUR 6.0.34, Steam build 25725702, Unity 2022.3.62f2 x64, IL2CPP metadata 31.
+GameAssembly SHA256:
+B57399A48DFFFA243A837589516260C7842314EC3B373755027C39845A8F7292
+Metadata SHA256:
+ED8FF8264BECC4D3B2D33F20F0840C3435ACFC9C12D0BECBD4D175F3A57ED45E
+MelonLoader 0.7.3; Il2CppDumper 6.7.46; bundled Il2CppInterop generator;
+Unity dependencies 2022.3.62. Compile target .NET 6 / C# 10, SDK 6.0.428 Roslyn.
+Generated game bindings are build references only and are not distributed.
+Production compilation uses warnings as errors, zero warnings/errors.
+
+After MelonLoader has generated references in the game installation:
+dotnet build Source/DevourMonsterFreeze.csproj -c Release -p:GameDir="C:/path/to/DEVOUR"
+Standalone regression tests with a .NET 6 SDK:
+dotnet run --project Tests/Regression.csproj -c Release
+Tests use stand-ins and are never referenced by the production DLL.
+This environment used Roslyn csc.dll directly because the dotnet build launcher
+could not query the process start time in its sandbox; this does not affect
+the target runtime or the compiled mod.
+
+DEPENDENCIES (UNCHANGED)
+https://github.com/LavaGang/MelonLoader/releases/tag/v0.7.3
+https://github.com/Perfare/Il2CppDumper/releases/tag/v6.7.46
+https://github.com/LavaGang/MelonLoader.UnityDependencies/releases/tag/2022.3.62
+Loader archive SHA256:
+5B2B2F3D1CD42B59EC886C5BDC2663EDAE87A0097A4F4A8F58C0965A99DDA416
+
+LIMITS / NEXT LIVE CHECK
+The user confirmed v0.3.1 in VR. No running DEVOUR or headset is available here.
+Tests exercise production adapters with native-order stand-ins, and compilation
+uses the actual generated game bindings. These do not prove runtime Harmony
+interception or live UI/ability/network behavior. Verify full spawn charge,
+sustained UV use, Nightmare, respawn/purgatory, then existing controls. Export
+F9 if the charge or ability behaves unexpectedly.

@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+Reports/
+Payload/Mods/
+Payload/MelonLoader.x64.zip
+*.log

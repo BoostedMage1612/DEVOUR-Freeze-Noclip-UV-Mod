@@ -1,0 +1,56 @@
+DEVOUR Mod v0.4.0 - validation completed 2026-10-28 (America/Chicago)
+
+BUILD
+Compiled against the original DEVOUR 6.0.34 generated interop bindings with
+.NET 6 / C# 10 Roslyn and warnings treated as errors. Zero errors/warnings.
+Mono.Cecil verified assembly 0.4.0.0, MelonInfo 0.4.0, the VR/UV adapters and four
+UV hook handlers, exactly three GUI labels, and no test/tooling definitions or
+references. FreezeCore.cs, MonsterLease.cs, NoclipCore.cs, NoclipLease.cs and
+PlayerControls.cs match delivered v0.3.1 byte-for-byte.
+
+REGRESSION
+All 118 checks passed using production code with engine/input stand-ins.
+The complete output is included in Tests/Last_Run.txt.
+All 87 existing checks remain, covering gestures, mapped VR/keyboard movement,
+heading, jump/crouch, hovering, ownership/local identity, lifecycle restoration,
+collision exit and freeze state. The 31 UV checks cover:
+- Full starting charge and repeated drains/setter reductions in each of Easy,
+  Normal, Hard and Nightmare; no empty-destination or low-gauge notifications.
+- Nightmare's native 60-unit charged-battery state with both nonzero and zero
+  initial capacity, state reset, and return-from-purgatory zero writes.
+- Existing bonus capacities in Easy/Normal/Hard and unchanged difficulty/rates.
+- Synchronous zero-delay scheduling without recursion, native direct reset
+  replacement, depleted/high-drain ticks, recharge and normal UI notification.
+- Exact native pointer identity across managed wrappers, unrelated attributes
+  and other-player batteries, controller/owner and host/session guards.
+- Delayed initialization, respawn/replacement, scene clearing and resumption of
+  native scheduling once after host loss; normal knockout/input gates retained.
+- Missing state/native access failures contained without releasing freeze or
+  flight; recovery on retry; no per-frame notification spam when already full.
+
+PACKAGE SCRIPTS
+Linux PowerShell 7.4.6 ran the actual scripts against simulated installations
+containing copies of the exact native/metadata files plus inert executable and
+save markers. Verified:
+- Fresh v0.3.1 installation, upgrade to v0.4.0 and exact payload/ledger hashes.
+- Reinstall after moving the extracted package updates its recorded path.
+- Existing generated bindings and unrelated mod preserved during upgrade.
+- Both installed and package report exporters produce readable ZIPs under the
+  extracted package/Reports and preserve nested UV/gesture/flight diagnostics.
+- A modified installed mod is refused and left unchanged.
+- Removal retains shared loader/other mod/cache; separate fresh v0.4.0 install
+  and full removal work.
+- Native/metadata bytes and save markers remain unchanged.
+
+ARCHIVE
+Verified the payload manifest, unchanged loader hash, previous-v0.3.1 manifest,
+Windows launcher/script line endings, source-version labels, archive integrity,
+empty Reports folder and no included game binaries or intermediate build/test
+executables. The compiled mod and reproducible source/tests are included.
+
+LIMITS
+The user confirmed v0.3.1 working in VR. This v0.4.0 UV change has not run in
+DEVOUR or on a headset here. Stand-ins do not prove actual Harmony interception,
+live UV gauge/ability behavior, XR input, physics or networking. Script checks
+use Linux PowerShell instead of a Windows desktop. READ_ME_FIRST.txt contains
+a brief live check of charge, sustained use, Nightmare and existing controls.
