@@ -1,0 +1,119 @@
+PASS owner without Bolt HasControl can activate
+PASS remote character owned by host is rejected
+PASS nonowner controller remains eligible when selected local
+PASS neither owner nor controller gives explicit reason
+PASS no ground queries on activation or hover
+PASS motor Alive and alternate camera attachment are not identity gates
+PASS missing camera uses character direction
+PASS Space rises and hover holds altitude
+PASS rebound crouch action descends
+PASS WASD preserves altitude when looking up
+PASS diagonal normalized and long frame capped
+PASS input suspended for menu
+PASS input suspended for chat
+PASS input suspended for focus
+PASS input suspended for pause
+PASS position and interpolation cache agree
+PASS exit restores exact nondefault flags
+PASS overlap exit returns to entry
+PASS unavailable physics does not prevent exit
+PASS local replacement restores previous motor without teleport
+PASS host loss restores captured settings
+PASS release on crawling
+PASS release on knockout
+PASS release on carried
+PASS release on held
+PASS release on hiding
+PASS release on inactive
+PASS release on detached
+PASS release on disabled
+PASS release on ending
+PASS rejected session never captures
+PASS partial entry failure restores before retry
+PASS failed restoration retains snapshot then retries
+PASS diagnostic captures absent HasControl
+PASS freeze original capture preserved through repeated arming
+PASS left click alone leaves run input available without a mod toggle
+PASS right click toggles noclip once on release
+PASS freeze chord consumes noclip with together
+PASS freeze chord consumes noclip with left first
+PASS freeze chord consumes noclip with right first
+PASS chord releases do not toggle noclip: together
+PASS chord releases do not toggle noclip: left first
+PASS chord releases do not toggle noclip: right first
+PASS freeze chord requires both released before another toggle
+PASS nonoverlapping left and right clicks do not freeze
+PASS held clicks at spawn cannot trigger a gesture: left
+PASS held clicks at spawn cannot trigger a gesture: right
+PASS held clicks at spawn cannot trigger a gesture: both
+PASS pending right click discarded after menu
+PASS pending right click discarded after chat
+PASS pending right click discarded after pause
+PASS pending right click discarded after headset
+PASS pending right click discarded after disabled
+PASS pending right click discarded after disconnect
+PASS pending right click discarded after device_disabled
+PASS pending right click discarded after host
+PASS pending right click discarded after scene
+PASS pending right click discarded after player
+PASS pending right click discarded after profile
+PASS pending right click discarded after input
+PASS pending right click discarded after controller
+PASS pending right click discarded after left_disconnect
+PASS pending right click discarded after left_device_swap
+PASS pending right click discarded after right_device_swap
+PASS release in menu cannot become noclip on return
+PASS right-only toggle remains usable with left controller absent
+PASS left-handed mode keeps physical right-release and two-stick chord
+PASS desktop ignores pending and new VR gestures
+PASS left stick can still supply mapped sprint during noclip
+PASS freeze chord leaves an already active noclip session active
+PASS VR analog mapped movement follows headset and holds altitude
+PASS VR controller direction respects locomotion hand
+PASS VR character direction and changing native rotation are honored
+PASS vertical headset fallback keeps horizontal motion
+PASS VR focus follows headset while desktop mirror is unfocused
+PASS native mapped jump/crouch work without keyboard
+PASS VR pulse buttons sustain jump and crouch for OCULUS_TOUCH
+PASS VR pulse buttons sustain jump and crouch for VALVE_INDEX
+PASS VR pulse buttons sustain jump and crouch for HP_REVERB_G2
+PASS VR held mapping respects rebinds rather than hardcoded jump button
+PASS disabled binding or controller map cannot supply held motion
+PASS VR left-handed secondary action and combined rise/descend
+PASS VR mapped sprint and analog diagonal speed remain bounded
+PASS mapped keyboard axis is not doubled
+PASS invalid or tiny axis values cannot drift or corrupt flight
+PASS missing VR jump binding gives reason without changing motor
+PASS VR flight still honors menus and input disable
+PASS UV starts full and never drains in Easy
+PASS UV starts full and never drains in Normal
+PASS UV starts full and never drains in Hard
+PASS UV starts full and never drains in Nightmare
+PASS UV Nightmare activates native battery state even with nonzero default max
+PASS UV Nightmare supports zero-capacity default and later state reset
+PASS UV Nightmare return-from-purgatory zero setter never reaches UI
+PASS UV preserves active bonus capacity in Easy
+PASS UV preserves active bonus capacity in Normal
+PASS UV preserves active bonus capacity in Hard
+PASS UV zero-delay scheduling does not recurse or drain
+PASS UV reset replaces direct start-value write before its event
+PASS UV depleted scheduled tick is blocked before empty destination callback
+PASS UV native recharge tick keeps full gauge without altering recharge settings
+PASS UV allows only exact battery, preserving poison health and remote battery
+PASS UV matches separate wrappers by native pointer
+PASS UV ignores ineligible client
+PASS UV ignores ineligible detached
+PASS UV ignores ineligible nonowner
+PASS UV ignores ineligible inactive
+PASS UV ignores ineligible missing
+PASS UV ignores ineligible wrongname
+PASS UV accepts selected local controller without ownership
+PASS UV late battery initialization is retried
+PASS UV host loss resumes native updates once with zero-delay recursion guard
+PASS UV respawn protects new player and releases previous local battery
+PASS UV scene clear releases references and resumes scheduling only once
+PASS UV retains native knockout and input state
+PASS UV missing Nightmare state reports fault without guessing capacity
+PASS UV native access fault is contained and existing freeze flight remain active
+PASS UV steady maintenance does not spam full gauge events
+ALL 118 REGRESSION CHECKS PASSED (stand-ins, not live Unity)
