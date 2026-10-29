@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>DevourMonsterFreeze</AssemblyName>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Version>0.4.0</Version>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameDir)/MelonLoader/net6/*.dll"><Private>false</Private></Reference>
+    <Reference Include="$(GameDir)/MelonLoader/Il2CppAssemblies/*.dll"><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="RequireGameDir" BeforeTargets="ResolveReferences" Condition="'$(GameDir)' == ''">
+    <Error Text="Pass -p:GameDir=the DEVOUR installation folder after MelonLoader has generated its assemblies." />
+  </Target>
+</Project>
